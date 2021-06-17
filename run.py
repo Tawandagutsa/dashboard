@@ -11,32 +11,14 @@ from dash.dependencies import Input, Output
 from werkzeug.utils import secure_filename
 
 
-app = Flask(__name__)
 
-
-@app.route('/upload')
-def upload_file():
-    return render_template('upload.html')
-
-f = "COVID-19.xlsx"
-
-@app.route('/uploader', methods =['GET','POST'])
-def upload_file2():
-    if request.method=='POST':
-        f = request.files['file']
-        assign(f)
-        f.save(secure_filename(f.filename))
-        return "File successfully uploaded"
-
-def assign(file):
-    df = pd.read_excel(file)
-
-
-        
     
-app = dash.Dash(__name__, server= app,routes_pathname_prefix='/' )
+app = dash.Dash(__name__)
 
-df = pd.read_excel(f)
+server = app.server
+
+df = pd.read_excel("COVID-19.xlsx")
+
 
 dff = df.groupby('countriesAndTerritories', as_index=False)[['deaths','cases']].sum()
 print (dff[:5])
